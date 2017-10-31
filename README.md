@@ -1,6 +1,6 @@
 # My dotfiles
 
-#Install
+# Install
 
 Clone this repo into ~/.dotfiles:
 ```
