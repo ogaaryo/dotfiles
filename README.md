@@ -2,8 +2,8 @@
 
 # Install
 
-Clone this repo into ~/.dotfiles:
+Clone this repo into ~/dotfiles:
 ```
-git clone git@github.com:henrik/dotfiles.git ~/.dotfiles
+git clone git@github.com:ogaaryo/dotfiles.git ~/dotfiles
 ```
 
