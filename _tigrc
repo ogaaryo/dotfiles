@@ -1,0 +1,122 @@
+# main view の左端にコミットIDを表示する
+set main-view = id date author:email-user commit-title:graph=yes,refs=yes
+
+# blame view の行数表示をON、intervalを1に
+set blame-view  = date:default author:email-user id:yes,color line-number:yes,interval=1 text
+
+# Pager系の行数表示をON、intervalを1に (default: line-number:no,interval=5)
+set pager-view  = line-number:yes,interval=1 text
+set stage-view  = line-number:yes,interval=1 text
+set log-view    = line-number:yes,interval=1 text
+set blob-view   = line-number:yes,interval=1 text
+set diff-view   = line-number:yes,interval=1 text:yes,commit-title-overflow=no
+
+# # 画面を垂直方向に分割する
+# set vertical-split = yes
+#
+# 横分割に強制する
+set vertical-split = no
+#
+# # デフォルト値
+# set vertical-split = auto
+
+# utf-8 文字で画面描画する (~でトグル)
+set line-graphics = utf-8
+
+# 新規ファイルも表示する
+set status-show-untracked-files = yes
+
+# タブサイズ
+set tab-size = 4
+
+# # 空白無視
+# set ignore-space = all
+
+# 空白無視 (status-view では表示するが diff-view では無視する) (W でトグル)
+set ignore-space = at-eol
+
+# 検索時に大文字小文字を無視する (default: false)
+set ignore-case = true
+
+# 水平分割したウィンドウの下画面サイズを % で指定（行数指定も可）
+set split-view-height = 80%
+
+# マージ diff を表示する
+set diff-options = -m --first-parent
+
+# マウスを有効にする
+set mouse = true
+
+# '+行数' の形で Editor に行番号を引数として渡すか
+set editor-line-number = yes
+
+# リフレッシュするタイミング
+set refresh-mode = auto
+#set refresh-mode = after-command
+#set refresh-mode = periodic
+#set refresh-interval = 1
+
+# F で fetch (default: :toggle file-name / :toggle commit-title-refs)
+bind generic F      ?git fetch %(remote)
+bind main    F      ?git fetch %(remote)
+
+# Alt-f で :toggle file-name / :toggle commit-title-refs
+bind generic <Esc>f :toggle file-name
+bind main    <Esc>f :toggle commit-title-refs
+
+# U で pull
+bind generic U      ?git pull %(remote)
+
+# Alt-u で該当ブランチを更新
+bind main    <Esc>u ?sh -c "git checkout %(branch) && git pull %(remote) --ff-only && git checkout -"
+bind diff    <Esc>u ?sh -c "git checkout %(branch) && git pull %(remote) --ff-only && git checkout -"
+bind refs    <Esc>u ?sh -c "git checkout %(branch) && git pull %(remote) --ff-only && git checkout -"
+
+# P で remote への push
+bind generic P      ?git push -u %(remote) %(repo:head)
+
+# C で commit (refs での C は checkout, main での C は cherry-pick だが上書きする)
+bind generic C      !git commit
+#bind refs    C      !git commit
+bind main    C      !git commit
+
+# S で stash save
+bind generic S      ?git stash save "%(prompt Enter stash comment: )"
+
+# Y で stash pop
+bind diff    Y      ?git stash pop %(stash)
+bind stash   Y      ?git stash pop %(stash)
+
+# Alt-y で stash apply
+bind diff    <Esc>y ?git stash apply %(stash)
+bind stash   <Esc>y ?git stash apply %(stash)
+
+# ; で GitHub の該当コミットを開く ※要 hub インストール
+bind main    ;      @hub browse -- commit/%(commit)
+bind blame   ;      @hub browse -- commit/%(commit)
+bind diff    ;      @hub browse -- commit/%(commit)
+
+# ; で GitHub の該当ページを開く
+bind tree    ;      @hub browse -- blob/%(branch)/%(file)
+bind blob    ;      @hub browse -- blob/%(branch)/%(file)
+bind grep    ;      @hub browse -- blob/%(branch)/%(file)
+
+# Alt-; で GitHub の指定ブランチの該当ページを開く
+bind tree    <Esc>; @hub browse -- blob/"%(prompt Enter branch name: )"/%(file)
+bind blob    <Esc>; @hub browse -- blob/"%(prompt Enter branch name: )"/%(file)
+bind grep    <Esc>; @hub browse -- blob/"%(prompt Enter branch name: )"/%(file)
+
+# w で GitHub の該当ブランチの Pull Request 作成ページを開く ※要 hub インストール
+bind main    w      @hub browse -- compare/%(branch)?expand=1
+bind diff    w      @hub browse -- compare/%(branch)?expand=1
+bind refs    w      @hub browse -- compare/%(branch)?expand=1
+
+# B でブランチを作成してそのブランチに移動 (checkout -b)
+bind main    B      ?git checkout -b "%(prompt Enter branch name: )" %(branch)
+bind refs    B      ?git checkout -b "%(prompt Enter branch name: )" %(branch)
+bind main    <Esc>b ?git checkout -b "%(prompt Enter branch name: )" %(commit)
+
+# D でブランチを削除 (マージ済みブランチのみ. 強制削除(branch -D) は `!`) (refs-view)
+bind refs    D      ?git branch -d %(branch)
+# x でマージ済みローカルブランチをすべて削除 (master/develop 除く)
+bind refs    x      ?sh -c "git branch --merged | grep -vE '^\\*|master$|develop$' | xargs -I % git branch -d %"
