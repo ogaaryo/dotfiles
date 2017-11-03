@@ -20,8 +20,8 @@ ZSH_THEME="robbyrussell"
 # DISABLE_AUTO_TITLE="true"
  
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git gem complete rails3 ruby heroku)
+# Example format: plugins=(rails git textmate ruby lighthouse brew brew-cask cdd gem rbenv)
+plugins=(git gem complete rails ruby brew brew-cask cdd gem rbenv)
  
 source $ZSH/oh-my-zsh.sh
  
@@ -31,11 +31,7 @@ source $ZSH/oh-my-zsh.sh
 #
 # users generic .zshrc file for zsh(1)
  
-## Environment variable configuration
-#
-# LANG
-#
-export LANG=ja_JP.UTF-8
+
  
 ## Default shell configuration
 #
@@ -61,13 +57,24 @@ colors
 #    ;;
 #esac
 #RPROMPT=$'%B%{\e[$[32+$RANDOM%5]m%}{%n[@]$HOST}%{\e[m%}'
- 
-# auto change directory
+
+## Environment variable configuration
 #
+# LANG(文字コードの指定)
+#
+export LANG=ja_JP.UTF-8
+
+## auto change directory
+# cdを打たなくてもディレクトリ間の移動を可能にする
+# ディレクトリ名だけで戻れるようにする
 setopt auto_cd
- 
+cdpath=(.. ~ ~/dev/minacolor ~/dev ~/dev/afs ~/dotfiles)
+
+# 日本語ファイル名を表示可能にする
+setopt print_eight_bit
+
 # auto directory pushd that you can get dirs list by cd -[tab]
-#
+# cd -<tab>で以前移動したディレクトリを表示
 setopt auto_pushd
  
 # command correct edition before each completion attempt
@@ -85,7 +92,13 @@ setopt noautoremoveslash
 # no beep sound when complete list displayed
 #
 setopt nolistbeep
+
+# zsh-completionsの設定
+fpath=(/path/to/homebrew/share/zsh-completions $fpath)
  
+autoload -U compinit
+compinit -u
+
 ###
 ## Set other shell options
 ####
