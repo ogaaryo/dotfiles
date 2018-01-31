@@ -20,8 +20,8 @@ ZSH_THEME="robbyrussell"
 # DISABLE_AUTO_TITLE="true"
  
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Example format: plugins=(rails git textmate ruby lighthouse brew brew-cask cdd gem rbenv)
-plugins=(git gem complete rails ruby brew brew-cask cdd gem rbenv)
+# Example format: plugins=(rails git textmate ruby lighthouse)
+plugins=(git gem complete rails ruby heroku)
  
 source $ZSH/oh-my-zsh.sh
  
@@ -93,12 +93,6 @@ setopt noautoremoveslash
 #
 setopt nolistbeep
 
-# zsh-completionsの設定
-fpath=(/path/to/homebrew/share/zsh-completions $fpath)
- 
-autoload -U compinit
-compinit -u
-
 ###
 ## Set other shell options
 ####
@@ -137,9 +131,9 @@ setopt share_history        # share command history data
  
 ## Completion configuration
 #
-fpath=(~/.zsh/functions/Completion ${fpath})
-autoload -U compinit
-compinit
+#fpath=(~/.zsh/functions/Completion ${fpath})
+#autoload -U compinit
+#compinit
  
  
 ## zsh editor

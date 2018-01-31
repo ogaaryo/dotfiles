@@ -87,9 +87,12 @@ bind generic S      ?git stash save "%(prompt Enter stash comment: )"
 bind diff    Y      ?git stash pop %(stash)
 bind stash   Y      ?git stash pop %(stash)
 
-# Alt-y で stash apply
+# Esc-y で stash apply
 bind diff    <Esc>y ?git stash apply %(stash)
 bind stash   <Esc>y ?git stash apply %(stash)
+
+# D で stash を削除 (`!` と同じ) (stash-view)
+bind stash   D      ?git stash drop %(stash)
 
 # ; で GitHub の該当コミットを開く ※要 hub インストール
 bind main    ;      @hub browse -- commit/%(commit)
@@ -118,5 +121,7 @@ bind main    <Esc>b ?git checkout -b "%(prompt Enter branch name: )" %(commit)
 
 # D でブランチを削除 (マージ済みブランチのみ. 強制削除(branch -D) は `!`) (refs-view)
 bind refs    D      ?git branch -d %(branch)
+#bind refs     D      ?git push --delete origin %(branch)
+
 # x でマージ済みローカルブランチをすべて削除 (master/develop 除く)
 bind refs    x      ?sh -c "git branch --merged | grep -vE '^\\*|master$|develop$' | xargs -I % git branch -d %"
