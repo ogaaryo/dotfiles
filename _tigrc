@@ -38,6 +38,13 @@ set ignore-space = at-eol
 # 検索時に大文字小文字を無視する (default: false)
 set ignore-case = true
 
+# M で merge
+bind main    M      ?git merge %(branch)
+bind diff    M      ?git merge %(branch)
+bind refs    M      ?git merge %(branch)
+bind main    <Esc>m ?git merge %(commit)
+bind diff    <Esc>m ?git merge %(commit)
+
 # 水平分割したウィンドウの下画面サイズを % で指定（行数指定も可）
 set split-view-height = 80%
 
@@ -79,6 +86,10 @@ bind generic P      ?git push -u %(remote) %(repo:head)
 bind generic C      !git commit
 #bind refs    C      !git commit
 bind main    C      !git commit
+
+
+# Tでoriginをチェックアウトできるようにする
+#bind branch T !sh -ec 'b=`expr "%(branch)" : "origin/\(.*\)"`; git checkout -b $b %(branch)'
 
 # S で stash save
 bind generic S      ?git stash save "%(prompt Enter stash comment: )"
